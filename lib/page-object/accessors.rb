@@ -1,5 +1,6 @@
 require 'erb'
 require 'page-object/locator_generator'
+require 'cpt_hook'
 
 module PageObject
   #
@@ -194,13 +195,13 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def text_field(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'text_field_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'text_field_for', &block)
       define_method(name) do
-        return platform.text_field_value_for identifier.clone unless block_given?
+        return platform.text_field_value_for identifier.clone unless block_given? || hooked_methods.include?(:value)
         self.send("#{name}_element").value
       end
       define_method("#{name}=") do |value|
-        return platform.text_field_value_set(identifier.clone, value) unless block_given?
+        return platform.text_field_value_set(identifier.clone, value) unless block_given? || hooked_methods.include?(:value=)
         self.send("#{name}_element").value = value
       end
     end
@@ -219,9 +220,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def hidden_field(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'hidden_field_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'hidden_field_for', &block)
       define_method(name) do
-        return platform.hidden_field_value_for identifier.clone unless block_given?
+        return platform.hidden_field_value_for identifier.clone unless block_given? || hooked_methods.include?(:value)
         self.send("#{name}_element").value
       end
     end
@@ -242,13 +243,13 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def text_area(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'text_area_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'text_area_for', &block)
       define_method(name) do
-        return platform.text_area_value_for identifier.clone unless block_given?
+        return platform.text_area_value_for identifier.clone unless block_given? || hooked_methods.include?(:value)
         self.send("#{name}_element").value
       end
       define_method("#{name}=") do |value|
-        return platform.text_area_value_set(identifier.clone, value) unless block_given?
+        return platform.text_area_value_set(identifier.clone, value) unless block_given? || hooked_methods.include?(:value=)
         self.send("#{name}_element").value = value
       end
     end
@@ -270,13 +271,13 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def select_list(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'select_list_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'select_list_for', &block)
       define_method(name) do
-        return platform.select_list_value_for identifier.clone unless block_given?
+        return platform.select_list_value_for identifier.clone unless block_given? || hooked_methods.include?(:value)
         self.send("#{name}_element").value
       end
       define_method("#{name}=") do |value|
-        return platform.select_list_value_set(identifier.clone, value) unless block_given?
+        return platform.select_list_value_set(identifier.clone, value) unless block_given? || hooked_methods.include?(:value=)
         self.send("#{name}_element").select(value)
       end
       define_method("#{name}_options") do
@@ -300,9 +301,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def link(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'link_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'link_for', &block)
       define_method(name) do
-        return platform.click_link_for identifier.clone unless block_given?
+        return platform.click_link_for identifier.clone unless block_given?  || hooked_methods.include?(:click)
         self.send("#{name}_element").click
       end
     end
@@ -324,17 +325,17 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def checkbox(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'checkbox_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'checkbox_for', &block)
       define_method("check_#{name}") do
-        return platform.check_checkbox(identifier.clone) unless block_given?
+        return platform.check_checkbox(identifier.clone) unless block_given? || hooked_methods.include?(:check)
         self.send("#{name}_element").check
       end
       define_method("uncheck_#{name}") do
-        return platform.uncheck_checkbox(identifier.clone) unless block_given?
+        return platform.uncheck_checkbox(identifier.clone) unless block_given? || hooked_methods.include?(:uncheck)
         self.send("#{name}_element").uncheck
       end
       define_method("#{name}_checked?") do
-        return platform.checkbox_checked?(identifier.clone) unless block_given?
+        return platform.checkbox_checked?(identifier.clone) unless block_given? || hooked_methods.include?(:checked?)
         self.send("#{name}_element").checked?
       end
     end
@@ -355,13 +356,13 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def radio_button(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'radio_button_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'radio_button_for', &block)
       define_method("select_#{name}") do
-        return platform.select_radio(identifier.clone) unless block_given?
+        return platform.select_radio(identifier.clone) unless block_given? || hooked_methods.include?(:select)
         self.send("#{name}_element").select
       end
       define_method("#{name}_selected?") do
-        return platform.radio_selected?(identifier.clone) unless block_given?
+        return platform.radio_selected?(identifier.clone) unless block_given? || hooked_methods.include?(:selected?)
         self.send("#{name}_element").selected?
       end
     end
@@ -430,9 +431,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def button(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'button_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'button_for', &block)
       define_method(name) do
-        return platform.click_button_for identifier.clone unless block_given?
+        return platform.click_button_for identifier.clone unless block_given? || hooked_methods.include?(:click)
         self.send("#{name}_element").click
       end
     end
@@ -450,9 +451,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def div(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'div_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'div_for', &block)
       define_method(name) do
-        return platform.div_text_for identifier.clone unless block_given?
+        return platform.div_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -470,9 +471,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def span(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'span_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'span_for', &block)
       define_method(name) do
-        return platform.span_text_for identifier.clone unless block_given?
+        return platform.span_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -491,9 +492,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def table(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'table_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'table_for', &block)
       define_method(name) do
-        return platform.table_text_for identifier.clone unless block_given?
+        return platform.table_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -512,9 +513,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def cell(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'cell_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'cell_for', &block)
       define_method("#{name}") do
-        return platform.cell_text_for identifier.clone unless block_given?
+        return platform.cell_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -535,9 +536,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def row(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'row_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'row_for', &block)
       define_method("#{name}") do
-        return platform.row_text_for identifier.clone unless block_given?
+        return platform.row_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -556,9 +557,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def image(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'image_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'image_for', &block)
       define_method("#{name}_loaded?") do
-        return platform.image_loaded_for identifier.clone unless block_given?
+        return platform.image_loaded_for identifier.clone unless block_given? || hooked_methods.include?(:loaded?)
         self.send("#{name}_element").loaded?
       end
     end
@@ -594,9 +595,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def list_item(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'list_item_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'list_item_for', &block)
       define_method(name) do
-        return platform.list_item_text_for identifier.clone unless block_given?
+        return platform.list_item_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -616,9 +617,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def unordered_list(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'unordered_list_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'unordered_list_for', &block)
       define_method(name) do
-        return platform.unordered_list_text_for identifier.clone unless block_given?
+        return platform.unordered_list_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -638,9 +639,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def ordered_list(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'ordered_list_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'ordered_list_for', &block)
       define_method(name) do
-        return platform.ordered_list_text_for identifier.clone unless block_given?
+        return platform.ordered_list_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -660,9 +661,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def h1(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier,'h1_for', &block)
+      hooked_methods = standard_methods(name, identifier,'h1_for', &block)
       define_method(name) do
-        return platform.h1_text_for identifier.clone unless block_given?
+        return platform.h1_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -680,9 +681,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def h2(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'h2_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'h2_for', &block)
       define_method(name) do
-        return platform.h2_text_for identifier.clone unless block_given?
+        return platform.h2_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -700,9 +701,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def h3(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'h3_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'h3_for', &block)
       define_method(name) do
-        return platform.h3_text_for identifier.clone unless block_given?
+        return platform.h3_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -720,9 +721,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def h4(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'h4_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'h4_for', &block)
       define_method(name) do
-        return platform.h4_text_for identifier.clone unless block_given?
+        return platform.h4_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -740,9 +741,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def h5(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'h5_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'h5_for', &block)
       define_method(name) do
-        return platform.h5_text_for identifier.clone unless block_given?
+        return platform.h5_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -760,9 +761,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def h6(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'h6_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'h6_for', &block)
       define_method(name) do
-        return platform.h6_text_for identifier.clone unless block_given?
+        return platform.h6_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -780,9 +781,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def paragraph(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'paragraph_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'paragraph_for', &block)
       define_method(name) do
-        return platform.paragraph_text_for identifier.clone unless block_given?
+        return platform.paragraph_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -801,9 +802,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def file_field(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'file_field_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'file_field_for', &block)
       define_method("#{name}=") do |value|
-        return platform.file_field_value_set(identifier.clone, value) unless block_given?
+        return platform.file_field_value_set(identifier.clone, value) unless block_given? || hooked_methods.include?(:value)
         self.send("#{name}_element").value = value
       end
     end
@@ -821,9 +822,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def label(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'label_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'label_for', &block)
       define_method(name) do
-        return platform.label_text_for identifier.clone unless block_given?
+        return platform.label_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -841,9 +842,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def area(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier, 'area_for', &block)
+      hooked_methods = standard_methods(name, identifier, 'area_for', &block)
       define_method(name) do
-        return platform.click_area_for identifier.clone unless block_given?
+        return platform.click_area_for identifier.clone unless block_given? || hooked_methods.include?(:click)
         self.send("#{name}_element").click
       end
     end
@@ -909,9 +910,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def b(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier,'b_for', &block)
+      hooked_methods = standard_methods(name, identifier,'b_for', &block)
       define_method(name) do
-        return platform.b_text_for identifier.clone unless block_given?
+        return platform.b_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -929,9 +930,9 @@ module PageObject
     # @param optional block to be invoked when element method is called
     #
     def i(name, identifier={:index => 0}, &block)
-      standard_methods(name, identifier,'i_for', &block)
+      hooked_methods = standard_methods(name, identifier,'i_for', &block)
       define_method(name) do
-        return platform.i_text_for identifier.clone unless block_given?
+        return platform.i_text_for identifier.clone unless block_given? || hooked_methods.include?(:text)
         self.send("#{name}_element").text
       end
     end
@@ -975,8 +976,8 @@ module PageObject
         identifier = tag
         tag        = :element
       end
-
-      standard_methods(name, identifier, 'element_for', &block)
+      hook_defs = identifier.delete(:hooks)
+      hooked_methods = standard_methods(name, identifier, 'element_for', &block)
 
       define_method("#{name}") do
         element = self.send("#{name}_element")
@@ -988,9 +989,10 @@ module PageObject
         end
         element.text
       end
+
       define_method("#{name}_element") do
-        return call_block(&block) if block_given?
-        platform.element_for(tag, identifier.clone)
+        return wrap_element(hook_defs, call_block(&block)) if block_given?
+        wrap_element(hook_defs, platform.element_for(tag, identifier.clone))
       end
       define_method("#{name}?") do
         self.send("#{name}_element").exists?
@@ -1103,15 +1105,59 @@ module PageObject
       end unless tag == :param
     end
 
+    # Add methods needed for wrapping elements and resolving with vars
+    #
+    # @return [Nil]
+    def _add_common_hook_methods(defined_hooks)
+      unless respond_to?(:resolve_with)
+        define_method(:resolve_with) do |with_var|
+          return self if with_var == :page
+          return :self if with_var == :element
+          return send(with_var) if self.respond_to?(with_var)
+          with_var
+        end
+      end
+
+      unless respond_to?(:wrap_element)
+        define_method(:wrap_element) do |hook_defs, element|
+          return element unless hook_defs
+          hd = hook_defs.dup
+          hd.hooks.each { |hook| hook.call_chain.each { |cc| cc.resolve_with { |c| resolve_with(c) } } }
+          hd.hooks.each { |hook| hook.call_chain.each { |cc| cc.resolve_contexts { |c| resolve_with(c) } } }
+          CptHook::Hookable.new(element, hd, self)
+        end
+      end
+    end
+
+    # @return [Array<Symbol>] the list of functions with hooks applied.
     def standard_methods(name, identifier, method, &block)
+      hook_defs = identifier.delete(:hooks)
+      _add_common_hook_methods(hook_defs)
+
       define_method("#{name}_element") do
+        return wrap_element(hook_defs, call_block(&block)) if block_given?
+        wrap_element(hook_defs, platform.send(method, identifier.clone))
+      end
+
+      define_method("#{name}?") do
+        return wrap_element(hook_defs, call_block(&block)).exists? if block_given?
+        wrap_element(hook_defs, platform.send(method, identifier.clone)).exists?
+      end
+
+      # Provide a mechanism for accessing an element that has hooks
+      # without hooks being applied.  Useful for testing functionality that
+      # the hooks use.
+      define_method("#{name}_unhooked") do
         return call_block(&block) if block_given?
         platform.send(method, identifier.clone)
       end
-      define_method("#{name}?") do
-        return call_block(&block).exists? if block_given?
-        platform.send(method, identifier.clone).exists?
-      end
+
+      # Make sure it's safe to use enumerable methods on our return val.
+      hook_defs&.hooked_methods || []
+    end
+
+    def define_hooks(&block)
+      CptHook.define_hooks(&block)
     end
 
     #

@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'watir', '~> 6.8'
   s.add_dependency 'selenium-webdriver', '~> 3.0'
   s.add_dependency 'page_navigation', '>= 0.10'
+  s.add_dependency 'cpt_hook', '~> 0.3'
 
   s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'cucumber', '~> 2.0'
@@ -28,5 +29,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'coveralls', '~> 0.8.1'
   s.add_development_dependency 'net-http-persistent'
   s.add_development_dependency 'webdrivers', '~> 3.1'
-
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'pry-byebug'
 end

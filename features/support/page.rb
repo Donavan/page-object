@@ -8,7 +8,14 @@ class Page
   link(:hello1, {:text => "Hello", :index => 1})
   link(:hello2, {:text => "Hello", :index => 2})
 
-  text_field(:text_field_id, :id => "text_field_id")
+  value_hooks = define_hooks do
+    before(:value).call(:before_callback)
+    after(:value).call(:after_callback)
+    before(:value=).call(:before_callback)
+    after(:value=).call(:after_callback)
+  end
+
+  text_field(:text_field_id, :id => "text_field_id", hooks: value_hooks)
   text_field(:text_field_class, :class => "text_field_class")
   text_field(:text_field_name, :name => "text_field_name")
   text_field(:text_field_xpath, :xpath => "//input[@type='text']")
@@ -373,5 +380,23 @@ class Page
   i(:i_xpath, :xpath => '//i')
   i(:i_class_index, :class => 'i_class', :index => 0)
   i(:i_name_index, :name => 'i_name', :index => 0)
+
+  def before_callback(*args)
+    @before_callback_called = true
+  end
+  def after_callback(*args)
+    @after_callback_called = true
+  end
+
+  def before_callback?
+    val = @before_callback_called
+    @before_callback_called = nil
+    val
+  end
+  def after_callback?
+    val = @after_callback_called
+    @after_callback_called = true
+    val
+  end
 end
 

@@ -35,6 +35,10 @@ module PageObject
         element.selected_options.map(&:value).compact
       end
 
+      def select(*str_or_rx)
+        element.select(*str_or_rx)
+      end
+
     end
 
     ::PageObject::Elements.tag_to_class[:select] = ::PageObject::Elements::SelectList

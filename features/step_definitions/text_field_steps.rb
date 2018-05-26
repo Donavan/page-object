@@ -4,6 +4,8 @@ end
 
 Then /^the text field should contain "([^\"]*)"$/ do |expected_text|
   expect(@page.text_field_id).to eql expected_text
+  expect(@page.before_callback?).to be_truthy
+  expect(@page.after_callback?).to be_truthy
 end
 
 When /^I search for the text field by "([^\"]*)"$/ do |how|

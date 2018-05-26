@@ -10,7 +10,7 @@ require 'rspec'
 require 'watir'
 require 'webdrivers'
 require 'selenium-webdriver'
-
+require 'pry'
 require 'page-object'
 
 def mock_watir_browser
@@ -19,6 +19,8 @@ def mock_watir_browser
   allow(watir_browser).to receive(:is_a?).with(Watir::Browser).and_return(true)
   allow(watir_browser).to receive(:exists?).and_return(true)
   allow(watir_browser).to receive(:to_subtype).and_return(watir_browser)
+  allow(watir_browser).to receive(:value=).with(anything)
+  allow(watir_browser).to receive(:set).with(anything)
   watir_browser
 end
 
