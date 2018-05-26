@@ -18,7 +18,7 @@ class WatirAccessorsTestPageObject
   checkbox(:active, :id => 'is_active_id', hooks: test_hooks)
   radio_button(:first, :id => 'first_choice', hooks: test_hooks)
   button(:click_me, :id => 'button_submit', hooks: test_hooks)
-  div(:message, :id => 'message_id', hooks: test_hooks)
+  div(:message, :id => 'message_id', hooks: test_hooks, clickable: true)
   table(:cart, :id => 'cart_id', hooks: test_hooks)
   cell(:total, :id => 'total', hooks: test_hooks)
   span(:alert_span, :id => 'alert_id', hooks: test_hooks)
@@ -766,6 +766,11 @@ describe PageObject::Accessors do
         expect(watir_page_object).to respond_to(:message_element)
       end
 
+      it "should generate clickable methods" do
+        expect(watir_page_object).to respond_to(:click_message)
+        expect(watir_page_object).to respond_to(:click_message!)
+      end
+
       it "should call a block on the element method when present" do
         expect(block_page_object.footer_element).to eql "div"
       end
@@ -775,6 +780,18 @@ describe PageObject::Accessors do
       expect(watir_browser).to receive(:div).and_return(watir_browser)
       expect(watir_browser).to receive(:text).and_return("Message from div")
       expect(watir_page_object.message).to eql "Message from div"
+    end
+
+    it "allows clicks on the div" do
+      expect(watir_browser).to receive(:div).and_return(watir_browser)
+      expect(watir_browser).to receive(:click)
+      watir_page_object.click_message
+    end
+
+    it "allows forced clicks on the div" do
+      expect(watir_browser).to receive(:div).and_return(watir_browser)
+      expect(watir_browser).to receive(:click!)
+      watir_page_object.click_message!
     end
 
     it "should retrieve the unhooked div element from the page" do

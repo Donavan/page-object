@@ -306,6 +306,9 @@ module PageObject
         return platform.click_link_for identifier.clone unless block_given?  || hooked_methods.include?(:click)
         self.send("#{name}_element").click
       end
+      define_method("#{name}!") do
+        self.send("#{name}_element").click!
+      end
     end
     alias_method :a, :link
 
@@ -435,6 +438,9 @@ module PageObject
       define_method(name) do
         return platform.click_button_for identifier.clone unless block_given? || hooked_methods.include?(:click)
         self.send("#{name}_element").click
+      end
+      define_method("#{name}!") do
+        self.send("#{name}_element").click!
       end
     end
 
@@ -847,6 +853,9 @@ module PageObject
         return platform.click_area_for identifier.clone unless block_given? || hooked_methods.include?(:click)
         self.send("#{name}_element").click
       end
+      define_method("#{name}!") do
+        self.send("#{name}_element").click!
+      end
     end
 
     #
@@ -977,7 +986,7 @@ module PageObject
         tag        = :element
       end
       hook_defs = identifier.delete(:hooks)
-      hooked_methods = standard_methods(name, identifier, 'element_for', &block)
+      standard_methods(name, identifier, 'element_for', &block)
 
       define_method("#{name}") do
         element = self.send("#{name}_element")
@@ -1134,6 +1143,8 @@ module PageObject
       hook_defs = identifier.delete(:hooks)
       _add_common_hook_methods(hook_defs)
 
+      clickable = identifier.delete(:clickable)
+
       define_method("#{name}_element") do
         return wrap_element(hook_defs, call_block(&block)) if block_given?
         wrap_element(hook_defs, platform.send(method, identifier.clone))
@@ -1150,6 +1161,16 @@ module PageObject
       define_method("#{name}_unhooked") do
         return call_block(&block) if block_given?
         platform.send(method, identifier.clone)
+      end
+
+      if clickable
+        define_method("click_#{name}") do
+          self.send("#{name}_element").click
+        end
+
+        define_method("click_#{name}!") do
+          self.send("#{name}_element").click!
+        end
       end
 
       # Make sure it's safe to use enumerable methods on our return val.
