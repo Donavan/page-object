@@ -4,14 +4,14 @@ require "page-object/version"
 
 
 Gem::Specification.new do |s|
-  s.name = "page-object"
+  s.name = "c2po"
   s.version = PageObject::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ["Jeff Morgan", 'Alexis Andersen']
-  s.email = ["jeff.morgan@leandog.com", 'alexis.t.andersen@gmail.com']
+  s.authors = ["Jeff Morgan", 'Alexis Andersen', 'Donavan Stanley']
+  s.email = ["jeff.morgan@leandog.com", 'alexis.t.andersen@gmail.com', 'donavan.stanley@gmail.com']
   s.license       = 'MIT'
-  s.homepage = "http://github.com/cheezy/page-object"
-  s.summary = %q{Page Object DSL for browser testing}
+  s.homepage = "http://github.com/donavan/page-object"
+  s.summary = %q{Page Object DSL for browser testing with experimental features from Centric Consulting}
   s.description = %q{Page Object DSL that works with both Watir and Selenium}
 
   s.files = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(pkg|spec|features|coverage)/}) }
