@@ -1,9 +1,50 @@
-# page-object
+# Centric Consulting page-object
 
-[![Gem Version](https://badge.fury.io/rb/page-object.svg)](https://rubygems.org/gems/page-object)
-[![Build Status](https://travis-ci.org/cheezy/page-object.svg)](https://travis-ci.org/cheezy/page-object)
-[![Coverage Status](https://coveralls.io/repos/cheezy/page-object/badge.svg?nocache)](https://coveralls.io/r/cheezy/page-object)
+An experimental fork of [page-object](https://github.com/cheezy/page-object) that adds additional functionality.  This gem serves as a testbed for features we intend eventually send upstream as pull requests. It's meant to be a drop-in replacement for the original.  Replace page-object with c2po in your gemfile and require 'page-object' as normal.
 
+Going back to stock page-object is less easy.  The accessors in this gem accept additional options, such as `hooks` and `clickable`.  When switching back to the stock page-object you will need to remove those options as they'll get passed on to Watir as part of the identifier and Watir will raise an error.
+
+
+
+## What's different
+
+### Element hooks
+[Captain Hook](https://github.com/Donavan/cpt_hook) has been integrated.  This allows to add arbitrary	 before/after hooks to the elements on a PageObject.  For example, we can define a set of hooks that ensure `wait_for_ajax` is called for any action that triggers AJAX. For example:
+
+```ruby
+contacts_menu_hooks = define_hooks do
+  before(:click).call(:ensure_visible).with(:contacts)
+  after(:click).call(:wait_for_ajax)
+end
+
+link(:view_businesses, text: 'View Businesses', hooks: contacts_menu_hooks)
+
+# Calls ensure_visible(:contacts) before attempting to click the element
+# Calls wait_for_ajax after clicking the element. 
+```
+
+
+See README_HOOKS.md for full details.
+
+### Forced click methods
+For any element with a default method of `.click` (link, button, etc) and additional method with a bang that calls `click!` instead of `click`. For example:
+
+```ruby
+link(:my_link)
+# creates page.my_link
+# and page.my_link!
+```
+
+### Clickable elements
+Adding `clickable: true` to your element accessor call additional methods are added to click that element.
+
+```ruby
+span(:span_button, clickable: true)
+# creates page.click_span_button
+# and page.click_span_button!
+```
+
+## Original documentation
 
 A simple gem that assists in creating flexible page objects for testing browser based applications. The goal is to facilitate creating abstraction layers in your tests to decouple the tests from the item they are testing and to provide a simple interface to the elements on a page. It works with both watir and selenium-webdriver.
 
