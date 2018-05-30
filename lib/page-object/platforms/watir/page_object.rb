@@ -219,15 +219,15 @@ module PageObject
         # platform method to retrieve a text field element
         # See PageObject::Accessors#text_field
         #
-        def text_field_for(identifier)
-          find_watir_element("text_field(identifier)", Elements::TextField, identifier)
+        def text_field_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("text_field(identifier)", Elements::TextField, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of text field elements
         #
-        def text_fields_for(identifier)
-          elements = find_watir_elements("text_fields(identifier)", Elements::TextField, identifier)
+        def text_fields_for(identifier, method_hooks=nil, additional_contexts=[])
+          elements = find_watir_elements("text_fields(identifier)", Elements::TextField, identifier, nil, method_hooks, additional_contexts)
           elements.select { |e| e.element.tag_name == 'input' }
         end
 
@@ -243,15 +243,15 @@ module PageObject
         # platform method to retrieve a hidden field element
         # See PageObject::Accessors#hidden_field
         #
-        def hidden_field_for(identifier)
-          find_watir_element("hidden(identifier)", Elements::HiddenField, identifier)
+        def hidden_field_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("hidden(identifier)", Elements::HiddenField, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of hidden field elements
         #
-        def hidden_fields_for(identifier)
-          find_watir_elements("hiddens(identifier)", Elements::HiddenField, identifier)
+        def hidden_fields_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("hiddens(identifier)", Elements::HiddenField, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -275,15 +275,15 @@ module PageObject
         # platform method to get the text area element
         # See PageObject::Accessors#text_area
         #
-        def text_area_for(identifier)
-          find_watir_element("textarea(identifier)", Elements::TextArea, identifier)
+        def text_area_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("textarea(identifier)", Elements::TextArea, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of textarea elements
         #
-        def text_areas_for(identifier)
-          find_watir_elements("textareas(identifier)", Elements::TextArea, identifier)
+        def text_areas_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("textareas(identifier)", Elements::TextArea, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -310,15 +310,15 @@ module PageObject
         # platform method to return the select list element
         # See PageObject::Accessors#select_list
         #
-        def select_list_for(identifier)
-          find_watir_element("select_list(identifier)", Elements::SelectList, identifier)
+        def select_list_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("select_list(identifier)", Elements::SelectList, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of select_list elements
         #
-        def select_lists_for(identifier)
-          find_watir_elements("select_lists(identifier)", Elements::SelectList, identifier)
+        def select_lists_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("select_lists(identifier)", Elements::SelectList, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -334,17 +334,17 @@ module PageObject
         # platform method to return a PageObject::Elements::Link object
         # see PageObject::Accessors#link
         #
-        def link_for(identifier)
+        def link_for(identifier, method_hooks=nil, additional_contexts=[])
           call = "link(identifier)"
-          find_watir_element(call, Elements::Link, identifier)
+          find_watir_element(call, Elements::Link, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of link elements
         #
-        def links_for(identifier)
+        def links_for(identifier, method_hooks=nil, additional_contexts=[])
           call = "links(identifier)"
-          find_watir_elements(call, Elements::Link, identifier)
+          find_watir_elements(call, Elements::Link, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -375,15 +375,15 @@ module PageObject
         # platform method to return a PageObject::Elements::CheckBox element
         # See PageObject::Accessors#checkbox
         #
-        def checkbox_for(identifier)
-          find_watir_element("checkbox(identifier)", Elements::CheckBox, identifier)
+        def checkbox_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("checkbox(identifier)", Elements::CheckBox, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of checkbox elements
         #
-        def checkboxs_for(identifier)
-          find_watir_elements("checkboxes(identifier)", Elements::CheckBox, identifier)
+        def checkboxs_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("checkboxes(identifier)", Elements::CheckBox, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -406,15 +406,15 @@ module PageObject
         # platform method to return a PageObject::Eements::RadioButton element
         # See PageObject::Accessors#radio_button
         #
-        def radio_button_for(identifier)
-          find_watir_element("radio(identifier)", Elements::RadioButton, identifier)
+        def radio_button_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("radio(identifier)", Elements::RadioButton, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of radio button elements
         #
-        def radio_buttons_for(identifier)
-          find_watir_elements("radios(identifier)", Elements::RadioButton, identifier)
+        def radio_buttons_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("radios(identifier)", Elements::RadioButton, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -429,15 +429,15 @@ module PageObject
         # platform method to return a PageObject::Elements::Div element
         # See PageObject::Accessors#div
         #
-        def div_for(identifier)
-          find_watir_element("div(identifier)", Elements::Div, identifier, 'div')
+        def div_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("div(identifier)", Elements::Div, identifier, 'div', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of div elements
         #
-        def divs_for(identifier)
-          find_watir_elements("divs(identifier)", Elements::Div, identifier, 'div')
+        def divs_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("divs(identifier)", Elements::Div, identifier, 'div', method_hooks, additional_contexts)
         end
 
         #
@@ -452,15 +452,15 @@ module PageObject
         # platform method to return a PageObject::Elements::Span element
         # See PageObject::Accessors#span
         #
-        def span_for(identifier)
-          find_watir_element("span(identifier)", Elements::Span, identifier, 'span')
+        def span_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("span(identifier)", Elements::Span, identifier, 'span', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of span elements
         #
-        def spans_for(identifier)
-          find_watir_elements("spans(identifier)", Elements::Span, identifier, 'span')
+        def spans_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("spans(identifier)", Elements::Span, identifier, 'span', method_hooks, additional_contexts)
         end
 
         #
@@ -476,17 +476,17 @@ module PageObject
         # platform method to retrieve a button element
         # See PageObject::Accessors#button
         #
-        def button_for(identifier)
+        def button_for(identifier, method_hooks=nil, additional_contexts=[])
           call = "button(identifier)"
-          find_watir_element(call, Elements::Button, identifier)
+          find_watir_element(call, Elements::Button, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of button elements
         #
-        def buttons_for(identifier)
+        def buttons_for(identifier, method_hooks=nil, additional_contexts=[])
           call = "buttons(identifier)"
-          find_watir_elements(call, Elements::Button, identifier)
+          find_watir_elements(call, Elements::Button, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -501,15 +501,15 @@ module PageObject
         # platform method to retrieve a table element
         # See PageObject::Accessors#table
         #
-        def table_for(identifier)
-          find_watir_element("table(identifier)", Elements::Table, identifier, 'table')
+        def table_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("table(identifier)", Elements::Table, identifier, 'table', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of table elements
         #
-        def tables_for(identifier)
-          find_watir_elements("tables(identifier)", Elements::Table, identifier, 'table')
+        def tables_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("tables(identifier)", Elements::Table, identifier, 'table', method_hooks, additional_contexts)
         end
 
         #
@@ -525,15 +525,15 @@ module PageObject
         # platform method to retrieve a table cell element
         # See PageObject::Accessors#cell
         #
-        def cell_for(identifier)
-          find_watir_element("td(identifier)", Elements::TableCell, identifier, 'td')
+        def cell_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("td(identifier)", Elements::TableCell, identifier, 'td', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of table cell elements
         #
-        def cells_for(identifier)
-          find_watir_elements("tds(identifier)", Elements::TableCell, identifier, 'td')
+        def cells_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("tds(identifier)", Elements::TableCell, identifier, 'td', method_hooks, additional_contexts)
         end
 
         #
@@ -549,15 +549,15 @@ module PageObject
         # platform method to retrieve a table row element
         # See PageObject::Accessors#row
         #
-        def row_for(identifier)
-          find_watir_element("tr(identifier)", Elements::TableRow, identifier, 'tr')
+        def row_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("tr(identifier)", Elements::TableRow, identifier, 'tr', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of table row elements
         #
-        def rows_for(identifier)
-          find_watir_elements("trs(identifier)", Elements::TableRow, identifier, 'tr')
+        def rows_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("trs(identifier)", Elements::TableRow, identifier, 'tr', method_hooks, additional_contexts)
         end
 
         #
@@ -572,30 +572,30 @@ module PageObject
         # platform method to retrieve an image element
         # See PageObject::Accessors#image
         #
-        def image_for(identifier)
-          find_watir_element("image(identifier)", Elements::Image, identifier)
+        def image_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("image(identifier)", Elements::Image, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of image elements
         #
-        def images_for(identifier)
-          find_watir_elements("images(identifier)", Elements::Image, identifier)
+        def images_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("images(identifier)", Elements::Image, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve a form element
         # See PageObject::Accessors#form
         #
-        def form_for(identifier)
-          find_watir_element("form(identifier)", Elements::Form, identifier)
+        def form_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("form(identifier)", Elements::Form, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of forms
         #
-        def forms_for(identifier)
-          find_watir_elements("forms(identifier)", Elements::Form, identifier)
+        def forms_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("forms(identifier)", Elements::Form, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -610,15 +610,15 @@ module PageObject
         # platform method to retrieve a list item element
         # See PageObject::Accessors#list_item
         #
-        def list_item_for(identifier)
-          find_watir_element("li(identifier)", Elements::ListItem, identifier, 'li')
+        def list_item_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("li(identifier)", Elements::ListItem, identifier, 'li', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of list items
         #
-        def list_items_for(identifier)
-          find_watir_elements("lis(identifier)", Elements::ListItem, identifier, 'li')
+        def list_items_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("lis(identifier)", Elements::ListItem, identifier, 'li', method_hooks, additional_contexts)
         end
 
         #
@@ -633,15 +633,15 @@ module PageObject
         # platform method to retrieve an unordered list element
         # See PageObject::Accessors#unordered_list
         #
-        def unordered_list_for(identifier)
-          find_watir_element("ul(identifier)", Elements::UnorderedList, identifier, 'ul')
+        def unordered_list_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("ul(identifier)", Elements::UnorderedList, identifier, 'ul', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of unordered lists
         #
-        def unordered_lists_for(identifier)
-          find_watir_elements("uls(identifier)", Elements::UnorderedList, identifier, 'ul')
+        def unordered_lists_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("uls(identifier)", Elements::UnorderedList, identifier, 'ul', method_hooks, additional_contexts)
         end
 
         #
@@ -656,15 +656,15 @@ module PageObject
         # platform method to retrieve an ordered list element
         # See PageObject::Accessors#ordered_list
         #
-        def ordered_list_for(identifier)
-          find_watir_element("ol(identifier)", Elements::OrderedList, identifier, 'ol')
+        def ordered_list_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("ol(identifier)", Elements::OrderedList, identifier, 'ol', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of ordered lists
         #
-        def ordered_lists_for(identifier)
-          find_watir_elements("ols(identifier)", Elements::OrderedList, identifier, 'ol')
+        def ordered_lists_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("ols(identifier)", Elements::OrderedList, identifier, 'ol', method_hooks, additional_contexts)
         end
 
         #
@@ -679,15 +679,15 @@ module PageObject
         # platform method to retrieve the h1 element
         # See PageObject::Accessors#h1
         #
-        def h1_for(identifier)
-          find_watir_element("h1(identifier)", Elements::Heading, identifier, 'h1')
+        def h1_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("h1(identifier)", Elements::Heading, identifier, 'h1', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of h1s
         #
-        def h1s_for(identifier)
-          find_watir_elements("h1s(identifier)", Elements::Heading, identifier, 'h1')
+        def h1s_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("h1s(identifier)", Elements::Heading, identifier, 'h1', method_hooks, additional_contexts)
         end
 
         #
@@ -702,8 +702,8 @@ module PageObject
         # platform method to retrieve the h2 element
         # See PageObject::Accessors#h2
         #
-        def h2_for(identifier)
-          find_watir_element("h2(identifier)", Elements::Heading, identifier, 'h2')
+        def h2_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("h2(identifier)", Elements::Heading, identifier, 'h2', method_hooks, additional_contexts)
         end
 
         #
@@ -725,15 +725,15 @@ module PageObject
         # platform method to retrieve the h3 element
         # See PageObject::Accessors#h3
         #
-        def h3_for(identifier)
-          find_watir_element("h3(identifier)", Elements::Heading, identifier, 'h3')
+        def h3_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("h3(identifier)", Elements::Heading, identifier, 'h3', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of h3s
         #
-        def h3s_for(identifier)
-          find_watir_elements("h3s(identifier)", Elements::Heading, identifier, 'h3')
+        def h3s_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("h3s(identifier)", Elements::Heading, identifier, 'h3', method_hooks, additional_contexts)
         end
 
         #
@@ -748,15 +748,15 @@ module PageObject
         # platform method to retrieve the h4 element
         # See PageObject::Accessors#h4
         #
-        def h4_for(identifier)
-          find_watir_element("h4(identifier)", Elements::Heading, identifier, 'h4')
+        def h4_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("h4(identifier)", Elements::Heading, identifier, 'h4', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of h4s
         #
-        def h4s_for(identifier)
-          find_watir_elements("h4s(identifier)", Elements::Heading, identifier, 'h4')
+        def h4s_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("h4s(identifier)", Elements::Heading, identifier, 'h4', method_hooks, additional_contexts)
         end
 
         #
@@ -771,15 +771,15 @@ module PageObject
         # platform method to retrieve the h5 element
         # See PageObject::Accessors#h5
         #
-        def h5_for(identifier)
-          find_watir_element("h5(identifier)", Elements::Heading, identifier, 'h5')
+        def h5_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("h5(identifier)", Elements::Heading, identifier, 'h5', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of h5s
         #
-        def h5s_for(identifier)
-          find_watir_elements("h5s(identifier)", Elements::Heading, identifier, 'h5')
+        def h5s_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("h5s(identifier)", Elements::Heading, identifier, 'h5', method_hooks, additional_contexts)
         end
 
         #
@@ -794,15 +794,15 @@ module PageObject
         # platform method to retrieve the h6 element
         # See PageObject::Accessors#h6
         #
-        def h6_for(identifier)
-          find_watir_element("h6(identifier)", Elements::Heading, identifier, 'h6')
+        def h6_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("h6(identifier)", Elements::Heading, identifier, 'h6', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of h6s
         #
-        def h6s_for(identifier)
-          find_watir_elements("h6s(identifier)", Elements::Heading, identifier, 'h6')
+        def h6s_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("h6s(identifier)", Elements::Heading, identifier, 'h6', method_hooks, additional_contexts)
         end
 
         #
@@ -817,15 +817,15 @@ module PageObject
         # platform method to retrieve the paragraph element
         # See PageObject::Accessors#paragraph
         #
-        def paragraph_for(identifier)
-          find_watir_element("p(identifier)", Elements::Paragraph, identifier, 'p')
+        def paragraph_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("p(identifier)", Elements::Paragraph, identifier, 'p', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of paragraph elements
         #
-        def paragraphs_for(identifier)
-          find_watir_elements("ps(identifier)", Elements::Paragraph, identifier, 'p')
+        def paragraphs_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("ps(identifier)", Elements::Paragraph, identifier, 'p', method_hooks, additional_contexts)
         end
 
         #
@@ -840,16 +840,16 @@ module PageObject
         # platform method to return a PageObject::Elements::Label element
         # See PageObject::Accessors#label
         #
-        def label_for(identifier)
-          find_watir_element("label(identifier)", Elements::Label, identifier, 'label')
+        def label_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("label(identifier)", Elements::Label, identifier, 'label', method_hooks, additional_contexts)
         end
 
         #
         #
         # platform method to retrieve an array of label elements
         #
-        def labels_for(identifier)
-          find_watir_elements("labels(identifier)", Elements::Label, identifier, 'label')
+        def labels_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("labels(identifier)", Elements::Label, identifier, 'label', method_hooks, additional_contexts)
         end
 
         #
@@ -865,15 +865,15 @@ module PageObject
         # platform method to retrieve a file_field element
         # See PageObject::Accessors#file_field
         #
-        def file_field_for(identifier)
-          find_watir_element("file_field(identifier)", Elements::FileField, identifier)
+        def file_field_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("file_field(identifier)", Elements::FileField, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of file field elements
         #
-        def file_fields_for(identifier)
-          find_watir_elements("file_fields(identifier)", Elements::FileField, identifier)
+        def file_fields_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("file_fields(identifier)", Elements::FileField, identifier, nil, method_hooks, additional_contexts)
         end
 
         #
@@ -886,73 +886,73 @@ module PageObject
         #
         # platform method to retrieve an area element
         #
-        def area_for(identifier)
-          find_watir_element("area(identifier)", Elements::Area, identifier, 'area')
+        def area_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("area(identifier)", Elements::Area, identifier, 'area', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of area elements
         #
-        def areas_for(identifier)
-          find_watir_elements("areas(identifier)", Elements::Area, identifier, 'area')
+        def areas_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("areas(identifier)", Elements::Area, identifier, 'area', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve a canvas element
         #
-        def canvas_for(identifier)
-          find_watir_element("canvas(identifier)", Elements::Canvas, identifier, 'canvas')
+        def canvas_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("canvas(identifier)", Elements::Canvas, identifier, 'canvas', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of canvas elements
         #
-        def canvass_for(identifier)
-          find_watir_elements("canvases(identifier)", Elements::Canvas, identifier, 'canvas')
+        def canvass_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("canvases(identifier)", Elements::Canvas, identifier, 'canvas', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an audio element
         #
-        def audio_for(identifier)
-          find_watir_element("audio(identifier)", Elements::Audio, identifier, 'audio')
+        def audio_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("audio(identifier)", Elements::Audio, identifier, 'audio', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of audio elements
         #
-        def audios_for(identifier)
-          find_watir_elements("audios(identifier)", Elements::Audio, identifier, 'audio')
+        def audios_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("audios(identifier)", Elements::Audio, identifier, 'audio', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve a video element
         #
-        def video_for(identifier)
-          find_watir_element("video(identifier)", Elements::Video, identifier, 'video')
+        def video_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("video(identifier)", Elements::Video, identifier, 'video', method_hooks, additional_contexts)
         end
 
         #
         # platform method to retrieve an array of video elements
         #
-        def videos_for(identifier)
-          find_watir_elements("videos(identifier)", Elements::Video, identifier, 'video')
+        def videos_for(identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("videos(identifier)", Elements::Video, identifier, 'video', method_hooks, additional_contexts)
         end
 
         #
         # platform method to return a PageObject::Elements::Element element
         # See PageObject::Accessors#element
         #
-        def element_for(tag, identifier)
-          find_watir_element("#{tag.to_s}(identifier)", Elements::Element, identifier, tag.to_s)
+        def element_for(tag, identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_element("#{tag.to_s}(identifier)", Elements::Element, identifier, tag.to_s, method_hooks, additional_contexts)
         end
 
         #
         # platform method to return an array of  PageObject::Elements::Element elements
         # See PageObject::Accessors#element
         #
-        def elements_for(tag, identifier)
-          find_watir_elements("#{tag.to_s}s(identifier)", Elements::Element, identifier, tag.to_s)
+        def elements_for(tag, identifier, method_hooks=nil, additional_contexts=[])
+          find_watir_elements("#{tag.to_s}s(identifier)", Elements::Element, identifier, tag.to_s, method_hooks, additional_contexts)
         end
 
         #
@@ -974,14 +974,14 @@ module PageObject
         #
         # platform method to return a svg element
         #
-        def svg_for(identifier)
+        def svg_for(identifier, method_hooks=nil, additional_contexts=[])
           find_watir_element("element(identifier)", Elements::Element, identifier)
         end
 
         #
         # platform method to return an array of svg elements
         #
-        def svgs_for(identifier)
+        def svgs_for(identifier, method_hooks=nil, additional_contexts=[])
           find_watir_elements("element(identifier)", Elements::Element, identifier)
         end
 
@@ -997,14 +997,14 @@ module PageObject
         # platform method to retrieve the b element
         # See PageObject::Accessors#b
         #
-        def b_for(identifier)
+        def b_for(identifier, method_hooks=nil, additional_contexts=[])
           find_watir_element("b(identifier)", Elements::Bold, identifier, 'b')
         end
 
         #
         # platform method to retrieve an array of bs
         #
-        def bs_for(identifier)
+        def bs_for(identifier, method_hooks=nil, additional_contexts=[])
           find_watir_elements("bs(identifier)", Elements::Bold, identifier, 'b')
         end
 
@@ -1020,31 +1020,37 @@ module PageObject
         # platform method to retrieve the i element
         # See PageObject::Accessors#i
         #
-        def i_for(identifier)
+        def i_for(identifier, method_hooks=nil, additional_contexts=[])
           find_watir_element("i(identifier)", Elements::Italic, identifier, 'i')
         end
 
         #
         # platform method to retrieve an array of is
         #
-        def is_for(identifier)
+        def is_for(identifier, method_hooks=nil, additional_contexts=[])
           find_watir_elements("is(identifier)", Elements::Italic, identifier, 'i')
         end
 
         private
 
-        def find_watir_elements(the_call, type, identifier, tag_name=nil)
+        def find_watir_elements(the_call, type, identifier, tag_name=nil, method_hooks=::CptHook::DSL::HookDefinitions.new, additional_contexts=[])
           identifier, frame_identifiers = parse_identifiers(identifier, type, tag_name)
           elements = @browser.instance_eval "#{nested_frames(frame_identifiers)}#{the_call}"
           switch_to_default_content(frame_identifiers)
-          elements.map { |element| type.new(element) }
+          elements.map { |element| type.new(element, method_hooks, additional_contexts) }
         end
 
-        def find_watir_element(the_call, type, identifier, tag_name=nil)
+        require 'pry'
+        def find_watir_element(the_call, type, identifier, tag_name=nil, method_hooks=::CptHook::DSL::HookDefinitions.new, additional_contexts=[])
+          begin
           identifier, frame_identifiers = parse_identifiers(identifier, type, tag_name)
           element = @browser.instance_eval "#{nested_frames(frame_identifiers)}#{the_call}"
           switch_to_default_content(frame_identifiers)
-          type.new(element)
+          type.new(element, method_hooks, additional_contexts)
+          rescue Exception => ex
+            binding.pry;2
+            puts ex.message
+          end
         end
 
         def find_watir_pages(identifier, page_class)

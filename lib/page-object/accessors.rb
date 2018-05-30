@@ -986,7 +986,8 @@ module PageObject
         tag        = :element
       end
       hook_defs = identifier.delete(:hooks)
-      standard_methods(name, identifier, 'element_for', &block)
+
+      hooked_methods = standard_methods(name, identifier, 'element_for', &block)
 
       define_method("#{name}") do
         element = self.send("#{name}_element")
@@ -1000,8 +1001,9 @@ module PageObject
       end
 
       define_method("#{name}_element") do
-        return wrap_element(hook_defs, call_block(&block)) if block_given?
-        wrap_element(hook_defs, platform.element_for(tag, identifier.clone))
+        defs = resolve_hooks(hook_defs)
+        return ::CptHook::Hookable.new(call_block(&block), defs) if block_given?
+        platform.element_for(tag, identifier.clone, defs)
       end
       define_method("#{name}?") do
         self.send("#{name}_element").exists?
@@ -1114,54 +1116,10 @@ module PageObject
       end unless tag == :param
     end
 
-    # Add methods needed for wrapping elements and resolving with vars
-    #
-    # @return [Nil]
-    def _add_common_hook_methods(defined_hooks)
-      unless respond_to?(:resolve_with)
-        define_method(:resolve_with) do |with_var|
-          return self if with_var == :page
-          return :self if with_var == :element
-          return send(with_var) if self.respond_to?(with_var)
-          with_var
-        end
-      end
-
-      unless respond_to?(:wrap_element)
-        define_method(:wrap_element) do |hook_defs, element|
-          return element unless hook_defs
-          hd = hook_defs.dup
-          hd.hooks.each { |hook| hook.call_chain.each { |cc| cc.resolve_with { |c| resolve_with(c) } } }
-          hd.hooks.each { |hook| hook.call_chain.each { |cc| cc.resolve_contexts { |c| resolve_with(c) } } }
-          CptHook::Hookable.new(element, hd, self)
-        end
-      end
-    end
-
     # @return [Array<Symbol>] the list of functions with hooks applied.
     def standard_methods(name, identifier, method, &block)
       hook_defs = identifier.delete(:hooks)
-      _add_common_hook_methods(hook_defs)
-
       clickable = identifier.delete(:clickable)
-
-      define_method("#{name}_element") do
-        return wrap_element(hook_defs, call_block(&block)) if block_given?
-        wrap_element(hook_defs, platform.send(method, identifier.clone))
-      end
-
-      define_method("#{name}?") do
-        return wrap_element(hook_defs, call_block(&block)).exists? if block_given?
-        wrap_element(hook_defs, platform.send(method, identifier.clone)).exists?
-      end
-
-      # Provide a mechanism for accessing an element that has hooks
-      # without hooks being applied.  Useful for testing functionality that
-      # the hooks use.
-      define_method("#{name}_unhooked") do
-        return call_block(&block) if block_given?
-        platform.send(method, identifier.clone)
-      end
 
       if clickable
         define_method("click_#{name}") do
@@ -1171,6 +1129,26 @@ module PageObject
         define_method("click_#{name}!") do
           self.send("#{name}_element").click!
         end
+      end
+
+      define_method("#{name}_element") do
+        defs = resolve_hooks(hook_defs)
+        return ::CptHook::Hookable.new(call_block(&block), defs) if block_given?
+        platform.send(method, identifier.clone, defs, [self])
+      end
+
+      define_method("#{name}?") do
+        defs = resolve_hooks(hook_defs)
+        return ::CptHook::Hookable.new(call_block(&block), defs).exists? if block_given?
+        platform.send(method, identifier.clone, defs, [self]).exists?
+      end
+
+      # Provide a mechanism for accessing an element that has hooks
+      # without hooks being applied.  Useful for testing functionality that
+      # the hooks use.
+      define_method("#{name}_unhooked") do
+        return call_block(&block) if block_given?
+        platform.send(method, identifier.clone)
       end
 
       # Make sure it's safe to use enumerable methods on our return val.

@@ -1,5 +1,5 @@
 require 'page-object/nested_elements'
-
+require 'cpt_hook'
 module PageObject
   module Elements
     #
@@ -7,14 +7,15 @@ module PageObject
     #
     # @see PageObject::Platforms::Watir::Element for the Watir version of all common methods
     #
-    class Element
+    class Element < ::CptHook::Hookable
       include ::PageObject::NestedElements
 
-      attr_reader :element
+      alias_method :element, :__getobj__
 
-      def initialize(element)
-        @element = element
-        @platform = PageObject::Platforms::Watir::PageObject.new(@element)
+      def initialize(element, method_hooks=nil, additional_contexts=[])
+        method_hooks ||= ::CptHook::DSL::HookDefinitions.new
+        super
+        @platform = PageObject::Platforms::Watir::PageObject.new(element)
       end
 
       #

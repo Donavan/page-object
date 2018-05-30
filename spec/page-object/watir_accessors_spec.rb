@@ -478,7 +478,7 @@ describe PageObject::Accessors do
     it "should return a wrapped link element" do
       expect(watir_browser).to receive(:link).and_return(watir_browser)
       element = watir_page_object.google_search_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Link
     end
   end
 
@@ -518,7 +518,7 @@ describe PageObject::Accessors do
     it "should retrieve a wrapped text field element" do
       expect(watir_browser).to receive(:text_field).and_return(watir_browser)
       element = watir_page_object.first_name_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::TextField
     end
   end
 
@@ -550,7 +550,7 @@ describe PageObject::Accessors do
     it "should retrieve a wrapped hidden field element" do
       expect(watir_browser).to receive(:hidden).and_return(watir_browser)
       element = watir_page_object.social_security_number_element
-      expect(element).to be_instance_of(CptHook::Hookable)
+      expect(element).to be_instance_of(PageObject::Elements::HiddenField)
     end
   end
 
@@ -588,7 +588,7 @@ describe PageObject::Accessors do
     it "should retrieve a hooked text area element" do
       expect(watir_browser).to receive(:textarea).and_return(watir_browser)
       element = watir_page_object.address_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::TextArea
     end
   end
 
@@ -626,8 +626,8 @@ describe PageObject::Accessors do
 
     it "should retrieve the hooked select list element" do
       expect(watir_browser).to receive(:select_list).and_return(watir_browser)
-      element = watir_page_object.state_element
-      expect(element).to be_instance_of CptHook::Hookable
+      element = watir_page_object.state_unhooked
+      expect(element).to be_instance_of PageObject::Elements::SelectList
     end
 
     it "should return list of selection options" do
@@ -684,8 +684,8 @@ describe PageObject::Accessors do
 
     it "should retrieve a hooked checkbox element" do
       expect(watir_browser).to receive(:checkbox).and_return(watir_browser)
-      element = watir_page_object.active_element
-      expect(element).to be_instance_of CptHook::Hookable
+      element = watir_page_object.active_unhooked
+      expect(element).to be_instance_of PageObject::Elements::CheckBox
     end
   end
 
@@ -724,7 +724,7 @@ describe PageObject::Accessors do
     it "should retrieve a hooked radio button element" do
       expect(watir_browser).to receive(:radio).and_return(watir_browser)
       element = watir_page_object.first_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::RadioButton
     end
   end
 
@@ -752,10 +752,10 @@ describe PageObject::Accessors do
       expect(element).to be_instance_of PageObject::Elements::Button
     end
 
-    it "should retrieve an hooked button element" do
+    it "should retrieve a hooked button element" do
       expect(watir_browser).to receive(:button).and_return(watir_browser)
       element = watir_page_object.click_me_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Button
     end
   end
 
@@ -782,6 +782,12 @@ describe PageObject::Accessors do
       expect(watir_page_object.message).to eql "Message from div"
     end
 
+    it "should retrieve the unhooked div element from the page" do
+      expect(watir_browser).to receive(:div).and_return(watir_browser)
+      element = watir_page_object.message_unhooked
+      expect(element).to be_instance_of PageObject::Elements::Div
+    end
+
     it "allows clicks on the div" do
       expect(watir_browser).to receive(:div).and_return(watir_browser)
       expect(watir_browser).to receive(:click)
@@ -803,7 +809,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked div element from the page" do
       expect(watir_browser).to receive(:div).and_return(watir_browser)
       element = watir_page_object.message_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Div
     end
   end
 
@@ -834,7 +840,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked span element from the page" do
       expect(watir_browser).to receive(:span).and_return(watir_browser)
       element = watir_page_object.alert_span_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Span
     end
   end
 
@@ -859,7 +865,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked table element from the page" do
       expect(watir_browser).to receive(:table).and_return(watir_browser)
       element = watir_page_object.cart_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Table
     end
   end
 
@@ -890,7 +896,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked cell element from the page" do
       expect(watir_browser).to receive(:td).and_return(watir_browser)
       element = watir_page_object.total_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::TableCell
     end
   end
 
@@ -914,8 +920,14 @@ describe PageObject::Accessors do
 
     it "should retrieve the hooked image element from the page" do
       expect(watir_browser).to receive(:image).and_return(watir_browser)
+      element = watir_page_object.logo_unhooked
+      expect(element).to be_instance_of PageObject::Elements::Image
+    end
+
+    it "should retrieve the hooked image element from the page" do
+      expect(watir_browser).to receive(:image).and_return(watir_browser)
       element = watir_page_object.logo_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Image
     end
   end
 
@@ -939,7 +951,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked form element from the page" do
       expect(watir_browser).to receive(:form).and_return(watir_browser)
       element = watir_page_object.login_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Form
     end
   end
 
@@ -969,8 +981,14 @@ describe PageObject::Accessors do
 
     it "should retrieve the hooked list item element from the page" do
       expect(watir_browser).to receive(:li).and_return(watir_browser)
+      element = watir_page_object.item_one_unhooked
+      expect(element).to be_instance_of PageObject::Elements::ListItem
+    end
+
+    it "should retrieve the hooked list item element from the page" do
+      expect(watir_browser).to receive(:li).and_return(watir_browser)
       element = watir_page_object.item_one_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::ListItem
     end
   end
 
@@ -994,7 +1012,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:ul).and_return(watir_browser)
       element = watir_page_object.menu_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::UnorderedList
     end
   end
 
@@ -1018,7 +1036,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:ol).and_return(watir_browser)
       element = watir_page_object.top_five_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::OrderedList
     end
   end
 
@@ -1049,7 +1067,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:h1).and_return(watir_browser)
       element = watir_page_object.heading1_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Heading
     end
   end
 
@@ -1080,7 +1098,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:h2).and_return(watir_browser)
       element = watir_page_object.heading2_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Heading
     end
   end
 
@@ -1111,7 +1129,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:h3).and_return(watir_browser)
       element = watir_page_object.heading3_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Heading
     end
   end
 
@@ -1142,7 +1160,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:h4).and_return(watir_browser)
       element = watir_page_object.heading4_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Heading
     end
   end
 
@@ -1172,8 +1190,14 @@ describe PageObject::Accessors do
 
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:h5).and_return(watir_browser)
+      element = watir_page_object.heading5_unhooked
+      expect(element).to be_instance_of PageObject::Elements::Heading
+    end
+
+    it "should retrieve the hooked element from the page" do
+      expect(watir_browser).to receive(:h5).and_return(watir_browser)
       element = watir_page_object.heading5_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Heading
     end
   end
 
@@ -1204,7 +1228,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:h6).and_return(watir_browser)
       element = watir_page_object.heading6_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Heading
     end
   end
 
@@ -1236,7 +1260,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:p).and_return(watir_browser)
       element = watir_page_object.first_para_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Paragraph
     end
   end
 
@@ -1267,7 +1291,7 @@ describe PageObject::Accessors do
     it "should retrieve an hooked text field element" do
       expect(watir_browser).to receive(:file_field).and_return(watir_browser)
       element = watir_page_object.upload_me_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::FileField
     end
   end
 
@@ -1298,7 +1322,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:area).and_return(watir_browser)
       element = watir_page_object.img_area_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Area
     end
   end
 
@@ -1365,7 +1389,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:b).and_return(watir_browser)
       element = watir_page_object.bold_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Bold
     end
   end
 
@@ -1396,8 +1420,7 @@ describe PageObject::Accessors do
     it "should retrieve the hooked element from the page" do
       expect(watir_browser).to receive(:i).and_return(watir_browser)
       element = watir_page_object.italic_element
-      expect(element).to be_instance_of CptHook::Hookable
+      expect(element).to be_instance_of PageObject::Elements::Italic
     end
   end
-
 end

@@ -176,6 +176,21 @@ module PageObject
           @platform.send(:elements_for, tag, identifier[0] ? identifier[0] : {})
         end
       end
+
+      target.send(:define_method, :resolve_hooks) do |hook_defs|
+        return ::CptHook::DSL::HookDefinitions.new unless hook_defs
+        hd = hook_defs.dup
+        hd.hooks.each { |hook| hook.call_chain.each { |cc| cc.resolve_with { |c| resolve_with(c) } } }
+        hd.hooks.each { |hook| hook.call_chain.each { |cc| cc.resolve_contexts { |c| resolve_with(c) } } }
+        hd
+      end
+
+      target.send(:define_method, :resolve_with) do |with_var|
+        return self if with_var == :page
+        return :self if with_var == :element
+        return send(with_var) if self.respond_to?(with_var)
+        with_var
+      end
     end
 
   end
